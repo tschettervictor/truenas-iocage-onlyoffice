@@ -143,18 +143,18 @@ iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='
 iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
-iocage exec "${JAIL_NAME}" "mysql -h ${IP} -u ${DB_USERNAME} -D ${DB_NAME} -p${DB_PASSWORD} < /usr/local/www/onlyoffice/documentserver/server/schema/mysql/createdb.sql"
-iocage exec "${JAIL_NAME}" sed -i "" -e 's|postgres|mysql|g;s|5432|3306|g;1,/dbName/ s/onlyoffice/${DB_NAME}/;1,/dbUser/ s/onlyoffice/${DB_USERNAME}/;1,/dbPass/ s/onlyoffice/${DB_PASSWORD}/' /usr/local/etc/onlyoffice/documentserver/local.json
+iocage exec "${JAIL_NAME}" "mysql -h ${IP} -u ${DB_USER} -D ${DB_NAME} -p${DB_PASSWORD} < /usr/local/www/onlyoffice/documentserver/server/schema/mysql/createdb.sql"
+iocage exec "${JAIL_NAME}" sed -i "" -e 's|postgres|mysql|g;s|5432|3306|g;1,/dbName/ s/onlyoffice/${DB_NAME}/;1,/dbUser/ s/onlyoffice/${DB_USER}/;1,/dbPass/ s/onlyoffice/${DB_PASSWORD}/' /usr/local/etc/onlyoffice/documentserver/local.json
 
 iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
 iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my.cnf /root/.my.cnf
 iocage exec "${JAIL_NAME}" sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
 
 iocage exec "${JAIL_NAME}" service rabbitmq start
-iocage exec "${JAIL_NAME}" rabbitmqctl --erlang-cookie $(iocage exec "${JAIL_NAME}" cat /var/db/rabbitmq/.erlang.cookie) add_user ${RABBITMQ_USERNAME} ${RABBITMQ_PASSWORD}
-iocage exec "${JAIL_NAME}" rabbitmqctl --erlang-cookie $(iocage exec "${JAIL_NAME}" cat /var/db/rabbitmq/.erlang.cookie) set_user_tags ${RABBITMQ_USERNAME} administrator
-iocage exec "${JAIL_NAME}" rabbitmqctl --erlang-cookie $(iocage exec "${JAIL_NAME}" cat /var/db/rabbitmq/.erlang.cookie) set_permissions -p /  ${RABBITMQ_USERNAME} \".*\" \".*\" \".*\"
-iocage exec "${JAIL_NAME}" sed -i "" -e 's|guest:guest@localhost|${RABBITMQ_USERNAME}:${RABBITMQ_PASSWORD}@localhost|g' /usr/local/etc/onlyoffice/documentserver/local.json
+iocage exec "${JAIL_NAME}" rabbitmqctl --erlang-cookie $(iocage exec "${JAIL_NAME}" cat /var/db/rabbitmq/.erlang.cookie) add_user ${RABBITMQ_USER} ${RABBITMQ_PASSWORD}
+iocage exec "${JAIL_NAME}" rabbitmqctl --erlang-cookie $(iocage exec "${JAIL_NAME}" cat /var/db/rabbitmq/.erlang.cookie) set_user_tags ${RABBITMQ_USER} administrator
+iocage exec "${JAIL_NAME}" rabbitmqctl --erlang-cookie $(iocage exec "${JAIL_NAME}" cat /var/db/rabbitmq/.erlang.cookie) set_permissions -p /  ${RABBITMQ_USER} \".*\" \".*\" \".*\"
+iocage exec "${JAIL_NAME}" sed -i "" -e 's|guest:guest@localhost|${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@localhost|g' /usr/local/etc/onlyoffice/documentserver/local.json
 
 iocage exec "${JAIL_NAME}" "echo '[include]' >> /usr/local/etc/supervisord.conf"
 iocage exec "${JAIL_NAME}" "echo 'files = /usr/local/etc/onlyoffice/documentserver/supervisor/*.conf' >> /usr/local/etc/supervisord.conf"
