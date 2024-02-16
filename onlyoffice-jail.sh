@@ -143,7 +143,7 @@ iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='
 iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
-iocage exec "${JAIL_NAME}" "mysql -h ${JAIL_IP} -u ${DB_USERNAME} -D ${DB_NAME} -p${DB_PASSWORD} < /usr/local/www/onlyoffice/documentserver/server/schema/mysql/createdb.sql"
+iocage exec "${JAIL_NAME}" "mysql -h ${IP} -u ${DB_USERNAME} -D ${DB_NAME} -p${DB_PASSWORD} < /usr/local/www/onlyoffice/documentserver/server/schema/mysql/createdb.sql"
 iocage exec "${JAIL_NAME}" sed -i "" -e 's|postgres|mysql|g;s|5432|3306|g;1,/dbName/ s/onlyoffice/${DB_NAME}/;1,/dbUser/ s/onlyoffice/${DB_USERNAME}/;1,/dbPass/ s/onlyoffice/${DB_PASSWORD}/' /usr/local/etc/onlyoffice/documentserver/local.json
 
 iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
