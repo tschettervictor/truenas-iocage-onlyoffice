@@ -154,18 +154,18 @@ iocage exec "${JAIL_NAME}" service rabbitmq start
 iocage exec "${JAIL_NAME}" rabbitmqctl --erlang-cookie $(iocage exec "${JAIL_NAME}" cat /var/db/rabbitmq/.erlang.cookie) add_user ${RABBITMQ_USER} ${RABBITMQ_PASSWORD}
 iocage exec "${JAIL_NAME}" rabbitmqctl --erlang-cookie $(iocage exec "${JAIL_NAME}" cat /var/db/rabbitmq/.erlang.cookie) set_user_tags ${RABBITMQ_USER} administrator
 iocage exec "${JAIL_NAME}" rabbitmqctl --erlang-cookie $(iocage exec "${JAIL_NAME}" cat /var/db/rabbitmq/.erlang.cookie) set_permissions -p /  ${RABBITMQ_USER} \".*\" \".*\" \".*\"
-iocage exec "${JAIL_NAME}" sed -i "" -e 's|guest:guest@localhost|${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@localhost|g' /usr/local/etc/onlyoffice/documentserver/local.json
+iocage exec "${JAIL_NAME}" sed -i "" 's|guest:guest@localhost|${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@localhost|g' /usr/local/etc/onlyoffice/documentserver/local.json
 
 iocage exec "${JAIL_NAME}" "echo '[include]' >> /usr/local/etc/supervisord.conf"
 iocage exec "${JAIL_NAME}" "echo 'files = /usr/local/etc/onlyoffice/documentserver/supervisor/*.conf' >> /usr/local/etc/supervisord.conf"
 
 iocage exec "${JAIL_NAME}" mkdir -p /usr/local/etc/nginx/conf.d
 iocage exec "${JAIL_NAME}" cp /usr/local/etc/onlyoffice/documentserver/nginx/ds.conf /usr/local/etc/nginx/conf.d/.
-iocage exec "${JAIL_NAME}" sed -i '' -e '40s/^/    include \/usr\/local\/etc\/nginx\/conf.d\/*.conf;\n/g' /usr/local/etc/nginx/nginx.conf
+iocage exec "${JAIL_NAME}" sed -i '' '40s/^/    include \/usr\/local\/etc\/nginx\/conf.d\/*.conf;\n/g' /usr/local/etc/nginx/nginx.conf
 iocage exec "${JAIL_NAME}" sed -i '' '4d' /usr/local/etc/nginx/conf.d/ds.conf
 iocage exec "${JAIL_NAME}" service nginx restart
 
-iocage exec "${JAIL_NAME}" sed -i "" -e 's|/tmp/supervisor.sock|/var/run/supervisor/supervisor.sock|g' /usr/local/etc/supervisord.conf
+iocage exec "${JAIL_NAME}" sed -i "" 's|/tmp/supervisor.sock|/var/run/supervisor/supervisor.sock|g' /usr/local/etc/supervisord.conf
 iocage exec "${JAIL_NAME}" /usr/local/bin/documentserver-pluginsmanager.sh --update=/usr/local/www/onlyoffice/documentserver/sdkjs-plugins/plugin-list-default.json
 
 
