@@ -28,7 +28,7 @@ In addition, there are some other options which have sensible defaults, but can 
 Once you've downloaded the script and prepared the configuration file, run this script (`script onlyoffice.log ./onlyoffice-jail.sh`).  The script will run for maybe a minute.  When it finishes, your jail will be created and uptimekuma will be installed.
 
 ### Notes
-- This script will configure OnlyOffice to run on Nginx port 80 for use behind a reverse proxy
+- This script will configure OnlyOffice to run on Nginx port 80 for use behind a reverse proxy. If you have experience with Nginx, you can configure it to run https. All the necessary config files are at `/usr/local/etc/onlyoffice/documentserver/nginx`
 - This script is primarily put together for use with nextcloud
 - This script sets the "rejectUnauthorized" field to false instead of true
 - This script uses the default "secret" token. If you want to change it, you need to change it in `/usr/local/etc/onlyoffice/documentserver/local.json` and also set it in the the OnlyOffice settings in nextcloud
