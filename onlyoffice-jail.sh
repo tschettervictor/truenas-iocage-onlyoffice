@@ -159,18 +159,6 @@ iocage exec "${JAIL_NAME}" service rabbitmq restart
 
 #####
 #
-# Supervisord Installation
-#
-#####
-
-iocage exec "${JAIL_NAME}" sysrc supervisord_enable="YES"
-iocage exec "${JAIL_NAME}" "echo '[include]' >> /usr/local/etc/supervisord.conf"
-iocage exec "${JAIL_NAME}" "echo 'files = /usr/local/etc/onlyoffice/documentserver/supervisor/*.conf' >> /usr/local/etc/supervisord.conf"
-iocage exec "${JAIL_NAME}" sed -i "" -e 's|/tmp/supervisor.sock|/var/run/supervisor/supervisor.sock|g' /usr/local/etc/supervisord.conf
-iocage exec "${JAIL_NAME}" /usr/local/bin/documentserver-pluginsmanager.sh --update=/usr/local/www/onlyoffice/documentserver/sdkjs-plugins/plugin-list-default.json
-
-#####
-#
 # Nginx Installation
 #
 #####
@@ -181,6 +169,18 @@ iocage exec "${JAIL_NAME}" cp /usr/local/etc/onlyoffice/documentserver/nginx/ds.
 iocage exec "${JAIL_NAME}" sed -i '' -e '40s/^/    include \/usr\/local\/etc\/nginx\/conf.d\/*.conf;\n/g' /usr/local/etc/nginx/nginx.conf
 iocage exec "${JAIL_NAME}" sed -i '' '4d' /usr/local/etc/nginx/conf.d/ds.conf
 iocage exec "${JAIL_NAME}" service nginx restart
+
+#####
+#
+# Supervisord Installation
+#
+#####
+
+iocage exec "${JAIL_NAME}" sysrc supervisord_enable="YES"
+iocage exec "${JAIL_NAME}" "echo '[include]' >> /usr/local/etc/supervisord.conf"
+iocage exec "${JAIL_NAME}" "echo 'files = /usr/local/etc/onlyoffice/documentserver/supervisor/*.conf' >> /usr/local/etc/supervisord.conf"
+iocage exec "${JAIL_NAME}" sed -i "" -e 's|/tmp/supervisor.sock|/var/run/supervisor/supervisor.sock|g' /usr/local/etc/supervisord.conf
+iocage exec "${JAIL_NAME}" /usr/local/bin/documentserver-pluginsmanager.sh --update=/usr/local/www/onlyoffice/documentserver/sdkjs-plugins/plugin-list-default.json
 
 #####
 #
