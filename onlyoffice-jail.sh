@@ -142,6 +142,7 @@ iocage exec "${JAIL_NAME}" sed -i '' "/dbPass/s|onlyoffice|${DB_PASSWORD}|" /usr
 iocage exec "${JAIL_NAME}" sed -i '' "1,/inbox/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
 iocage exec "${JAIL_NAME}" sed -i '' "1,/outbox/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
 iocage exec "${JAIL_NAME}" sed -i '' "1,/browser/s|false|true|" /usr/local/etc/onlyoffice/documentserver/local.json
+iocage exec "${JAIL_NAME}" sed -i '' "1,/rejectUnauthorized/s|true|false|" /usr/local/etc/onlyoffice/documentserver/default.json
 
 #####
 #
