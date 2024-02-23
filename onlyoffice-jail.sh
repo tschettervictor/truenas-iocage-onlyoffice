@@ -111,6 +111,7 @@ rm /tmp/pkg.json
 #
 #####
 
+iocage set allow.sysvipc=1 "${JAIL_NAME}"
 iocage exec "${JAIL_NAME}" mkdir -p /mnt/includes
 iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 
